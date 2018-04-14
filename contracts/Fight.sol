@@ -22,8 +22,12 @@ contract Fight {
 	function join() external gameNotStarted {
 		require(msg.sender != player1);
 		player2 = msg.sender;
+		_start();
+  }
+
+	function _start() private {
 		started = true;
 		emit Started(player1, player2);
-  }
+	}
 
 }
