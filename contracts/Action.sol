@@ -1,9 +1,14 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.21;
 
+import "./Game.sol";
 
 contract Action {
+	Game public game;
 
-	function getName() public view returns (string);
-	function play(uint _fightId, uint _playerId) public;
+	function Action(address _gameAddress) public {
+		game = Game(_gameAddress);
+	}
 
+	function name() public view returns (string);
+	function play(uint _fightId) external;
 }

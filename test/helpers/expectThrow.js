@@ -1,13 +1,13 @@
 const expectThrow = async (promise, message = null) => {
       try {
-        await promise;
-        assert.fail('Expected throw not received');
+        await promise();
       } catch (error) {
         if (message) {
           assert.equal(error.message, message);
         }
-        assert.isOk(true);
+        return;
       }
+      assert.fail('Expected throw not received');
     };
 
 export default expectThrow

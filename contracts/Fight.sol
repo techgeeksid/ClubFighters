@@ -1,17 +1,20 @@
 pragma solidity ^0.4.21;
 
+import "./Game.sol";
 
 contract Fight {
+	Game public game;
 
-	address public player1 = 0;
-	address public player2 = 0;
+	address public playerLeft;
+	address public playerRight;
 	bool public started = false;
 	bool public ended = false;
 
-	event Started(address _player1, address _player2);
+	event FightStarted(address _playerLeft, address _playerRight);
 
-	function Fight() public {
-		player1 = msg.sender;
+	function Fight(address _playerLeft) public {
+		game = Game(msg.sender);
+		playerLeft = _playerLeft;
 	}
 
 	modifier gameNotStarted() {
@@ -20,14 +23,17 @@ contract Fight {
 	}
 
 	function join() external gameNotStarted {
-		require(msg.sender != player1);
-		player2 = msg.sender;
+		require(msg.sender != playerLeft);
+		require(game.isRegistered(msg.sender));
+		require(!game.isPlaying(msg.sender));
+
+		playerRight = msg.sender;
+		game.setPlaying(msg.sender);
 		_start();
   }
 
 	function _start() private {
 		started = true;
-		emit Started(player1, player2);
+		emit FightStarted(playerLeft, playerRight);
 	}
-
 }
